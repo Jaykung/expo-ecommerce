@@ -13,6 +13,7 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^17.4.2",
+    "expo-ecommerce": "file:..",
     "express": "^5.2.1"
   }
 }
