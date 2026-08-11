@@ -1,0 +1,40 @@
+import { UserButton } from "@clerk/react";
+import { useLocation } from "react-router";
+
+import {
+  ClipboardListIcon,
+  HomeIcon,
+  PanelLeftIcon,
+  ShoppingBagIcon,
+  UsersIcon
+} from "lucide-react";
+
+// eslint-disable-next-line
+export const NAVIGATION = [
+  { name: "Dashboard", path: "/dashboard", icon: <HomeIcon className="size-5" /> },
+  { name: "Products", path: "/products", icon: <ShoppingBagIcon className="size-5" /> },
+  { name: "Orders", path: "/orders", icon: <ClipboardListIcon className="size-5" /> },
+  { name: "Customers", path: "/customers", icon: <UsersIcon className="size-5" /> },
+];
+
+function Navbar() {
+  const location = useLocation();
+
+  return (
+    <nav className="navbar w-full bg-base-300">
+      <label htmlFor="my-drawer" aria-label="open sidebar" className="btn btn-square btn-ghost">
+        <PanelLeftIcon className="size-5" />
+      </label>
+      <div className="flex-1 px-4">
+        <h1 className="text-xl font-bold">
+          {NAVIGATION.find((item) => item.path === location.pathname)?.name || "Dashboard"}
+        </h1>
+      </div>
+      <div className="mr-5">
+        <UserButton />
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
