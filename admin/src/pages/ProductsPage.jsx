@@ -112,48 +112,6 @@ function ProductsPage() {
     }
   };
 
-  // products = [
-  //   {
-  //     _id: 1,
-  //     name: "Microwave",
-  //     description: "Great thing",
-  //     price: 7990,
-  //     stock: 50,
-  //     category: "appliance",
-  //     images: [
-  //       "https://www.ikea.com/th/th/images/products/gatebo-microwave-oven-air-fry-function-ikea-500-black__1399619_pe968362_s5.jpg?f=xl",
-  //     ],
-  //     averageRating: 7,
-  //     totalReviews: 2,
-  //   },
-  //   {
-  //     _id: 2,
-  //     name: "Fridge",
-  //     description: "Great thing",
-  //     price: 14430,
-  //     stock: 50,
-  //     category: "appliance",
-  //     images: [
-  //       "https://www.lg.com/content/dam/channel/wcms/th/image-update/refrigerator/2024/GN-C702HQCM-APYPLMT/revised_gallery/01_GN-C702HQCM_GN-C602HQCM_Front_inverter_2010.jpg/jcr:content/renditions/thum-1600x1062.jpeg?w=800",
-  //     ],
-  //     averageRating: 7,
-  //     totalReviews: 2,
-  //   },
-  //   {
-  //     _id: 3,
-  //     name: "Juice blender",
-  //     description: "Great thing",
-  //     price: 2188,
-  //     stock: 50,
-  //     category: "appliance",
-  //     images: [
-  //       "https://down-th.img.susercontent.com/file/th-11134207-7rasi-m0x8y0zvnanqdb@resize_w900_nl.webp",
-  //     ],
-  //     averageRating: 7,
-  //     totalReviews: 2,
-  //   },
-  // ];
-
   return (
     <div className="space-y-6">
       {/* HEADER */}
