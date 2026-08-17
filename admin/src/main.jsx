@@ -29,6 +29,9 @@ Sentry.init({
     // userInfo: false,
     // httpBodies: []
   },
+  sendDefaultPii: true,
+  enableLogs: true,
+
   integrations: [
     Sentry.replayIntegration()
   ],
