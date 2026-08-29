@@ -118,7 +118,7 @@ const WishlistScreen = () => {
                     onPress={() => handleRemoveFromWishlist(item._id, item.name)}
                     disabled={isRemovingFromWishlist}
                   >
-                    <Ionicons name="trash-outline" size={20} color="EF4444" />
+                    <Ionicons name="trash-outline" size={20} color="#EF4444" />
                   </TouchableOpacity>
                 </View>
                 {item.stock > 0 && (
