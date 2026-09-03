@@ -20,7 +20,6 @@ export const useAddresses = () => {
 
   const addAddressMutation = useMutation({
     mutationFn: async (addressData: Omit<Address, "_id">) => {
-      console.log("addressData:", addressData)
       const { data } = await api.post<{ addresses: Address[]; }>("/users/addresses", addressData);
       return data.addresses;
     },
