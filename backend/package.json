@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
