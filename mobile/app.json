@@ -52,7 +52,13 @@
       "@sentry/react-native",
       "expo-font",
       "expo-image",
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.identifier"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

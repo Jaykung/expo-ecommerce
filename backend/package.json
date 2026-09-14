@@ -24,6 +24,10 @@
     "express": "^5.2.1",
     "inngest": "^4.13.0",
     "mongoose": "^9.8.0",
-    "multer": "^2.2.0"
+    "multer": "^2.2.0",
+    "stripe": "^22.6.1"
+  },
+  "allowScripts": {
+    "protobufjs@7.6.5": true
   }
 }
