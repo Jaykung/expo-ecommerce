@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import mongoose from "mongoose";
 import { ENV } from "../config/env.js";
 import { Product } from "../models/product.model.js";
 import { User } from "../models/user.model.js";
@@ -21,6 +22,10 @@ export async function createPaymentIntent(req, res) {
     const validatedItems = [];
 
     for (const item of cartItems) {
+      if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+        return res.status(400).json({ error: "Invalid item quantity" });
+      }
+
       const product = await Product.findById(item.product._id);
       if (!product) {
         return res.status(404).json({ error: `Product ${item.product.name} not found` });
@@ -110,40 +115,57 @@ export async function handleWebhook(req, res) {
 
     console.log("Payment succeeded:", paymentIntent.id);
 
+    const session = await mongoose.startSession();
+
     try {
       const { userId, clerkId, orderItems, shippingAddress, totalPrice } = paymentIntent.metadata;
+      const items = JSON.parse(orderItems);
+      let order;
+      let orderAlreadyExists = false;
 
-      // Check if order already exists
-      const existingOrder = await Order.findOne({ "paymentResult.id": paymentIntent.id });
-      if (existingOrder) {
-        console.log("Order already exists for payment:", paymentIntent.id);
-        return res.json({ received: true });
-      }
+      await session.withTransaction(async () => {
+        const existingOrder = await Order.findOne({ "paymentResult.id": paymentIntent.id }).session(session);
+        if (existingOrder) {
+          orderAlreadyExists = true;
+          return;
+        }
 
-      // create order
-      const order = await Order.create({
-        user: userId,
-        clerkId,
-        orderItems: JSON.parse(orderItems),
-        shippingAddress: JSON.parse(shippingAddress),
-        paymentResult: {
-          id: paymentIntent.id,
-          status: "succeeded",
-        },
-        totalPrice: parseFloat(totalPrice),
+        for (const item of items) {
+          const updatedProduct = await Product.findOneAndUpdate(
+            { _id: item.product, stock: { $gte: item.quantity } },
+            { $inc: { stock: -item.quantity } },
+            { new: true, session }
+          );
+
+          if (!updatedProduct) {
+            throw new Error(`Product ${item.product} not found or has insufficient stock`);
+          }
+        }
+
+        [order] = await Order.create([{
+          user: userId,
+          clerkId,
+          orderItems: items,
+          shippingAddress: JSON.parse(shippingAddress),
+          paymentResult: {
+            id: paymentIntent.id,
+            status: "succeeded",
+          },
+          totalPrice: parseFloat(totalPrice),
+        }], { session });
       });
 
-      // update product stock
-      const items = JSON.parse(orderItems);
-      for (const item of items) {
-        await Product.findByIdAndUpdate(item.product, {
-          $inc: { stock: -item.quantity },
-        });
+      if (orderAlreadyExists) {
+        console.log("Order already exists for payment:", paymentIntent.id);
+        return res.json({ received: true });
       }
 
       console.log("Order created successfully:", order._id);
     } catch (error) {
       console.error("Error creating order from webhook:", error);
+      return res.status(500).json({ error: "Order fulfillment failed" });  
+    } finally {
+      await session.endSession();
     }
   }
 

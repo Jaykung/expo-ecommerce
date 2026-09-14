@@ -27,7 +27,7 @@ const CartScreen = () => {
     removeFromCart,
     updateQuantity,
   } = useCart();
-  const { addresses } = useAddresses();
+  const { addresses, isLoading: addressesLoading } = useAddresses();
 
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
@@ -271,7 +271,7 @@ const CartScreen = () => {
           className="bg-primary rounded-2xl overflow-hidden"
           activeOpacity={0.9}
           onPress={handleCheckout}
-          disabled={paymentLoading}
+          disabled={paymentLoading || addressesLoading}
         >
           <View className="py-5 flex-row items-center justify-center">
             {paymentLoading ? (
