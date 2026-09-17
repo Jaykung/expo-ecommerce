@@ -59,7 +59,7 @@ export async function createReview(req, res) {
       { new: true, runValidators: true }
     );
 
-    if (!updateProduct) {
+    if (!updatedProduct) {
       await Review.findByIdAndDelete(review._id);
       return res.status(404).json({ error: "Product not found" });
     }
