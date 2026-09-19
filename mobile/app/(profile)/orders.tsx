@@ -57,7 +57,7 @@ const OrdersScreen = () => {
       setSelectedOrder(null);
       setProductRatings({});
     } catch (error: any) {
-      Alert.alert("Error", error.response.data.error || "Failed to submit rating");
+      Alert.alert("Error", error.response?.data?.error || "Failed to submit rating");
     }
   };
 
@@ -84,7 +84,7 @@ const OrdersScreen = () => {
           contentContainerStyle={{ paddingBottom: 100 }}
         >
           <View className="px-6 py-4">
-            {orders.map((order) => {
+            {orders.map((order: Order) => {
               const totalItems = order.orderItems.reduce((sum: number, item) => sum + item.quantity, 0);
               const firstImage = order.orderItems[0].image;
 
